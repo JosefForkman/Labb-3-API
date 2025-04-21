@@ -14,5 +14,4 @@ public class Service
 
     // Navigation property
     public ICollection<PersonService> PersonServices { get; set; } = [];
-    public List<Person> Person { get; set; } = [];
 }
