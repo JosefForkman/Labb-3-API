@@ -32,7 +32,8 @@ builder.Services.AddOpenApi(options =>
     });
 });
 
-builder.Services.AddDbContext<DBContext>(option => option.UseSqlServer("Data Source=db; Database=PersonService; User id = sa; Password = P@ssw0rd; Trust Server Certificate=True;"));
+builder.Services.AddDbContext<DBContext>(option => option.UseSqlServer(
+    builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
