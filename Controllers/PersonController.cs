@@ -1,7 +1,5 @@
-using System.Threading.Tasks;
 using Labb_3_API.Data;
-using Labb_3_API.Models;
-using Microsoft.AspNetCore.Http;
+using Labb_3_API.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +15,21 @@ namespace Labb_3_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ICollection<Person>>> Get()
         {
-            var persons = await context.Persons.ToListAsync();
+            var persons = await context.Persons.Select(p => new Person
+            {
+                Id = p.Id,
+                FirstName = p.FirstName,
+                LastName = p.LastName,
+                BirthDate = p.BirthDate,
+                Email = p.Email,
+                PhoneNumber = p.PhoneNumber,
+                Services = p.PersonServices.Select(ps => new Service
+                {
+                    Id = ps.Service.Id,
+                    Title = ps.Service.Title,
+                    Description = ps.Service.Description
+                }).ToList()
+            }).ToListAsync();
             if (persons == null || persons.Count == 0)
             {
                 return NotFound(new { message = "No persons found." });
