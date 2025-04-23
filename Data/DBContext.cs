@@ -67,5 +67,12 @@ public class DBContext(DbContextOptions<DBContext> options) : DbContext(options)
             new PersonService { Id = 3, PersonId = 2, ServiceId = 2 },
             new PersonService { Id = 4, PersonId = 3, ServiceId = 3 }
         );
+
+        modelBuilder.Entity<Link>().HasData(
+            new Link { Id = 1, Title = "Länk 1", Url = "https://example.com/link1", PersonServiceId = 1 },
+            new Link { Id = 2, Title = "Länk 2", Url = "https://example.com/link2", PersonServiceId = 2 },
+            new Link { Id = 3, Title = "Länk 3", Url = "https://example.com/link3", PersonServiceId = 3 },
+            new Link { Id = 4, Title = "Länk 4", Url = "https://example.com/link4", PersonServiceId = 4 }
+        );
     }
 }

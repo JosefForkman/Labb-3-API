@@ -37,5 +37,20 @@ namespace Labb_3_API.Controllers
 
             return Ok(persons);
         }
+
+        [HttpGet("{id}/LInk", Name = "GetPersonById")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Person>> GetLink(int id)
+        {
+            var person = await context.Links.Where(p => p.PersonServices.PersonId == id).ToListAsync();
+
+            if (person == null)
+            {
+                return NotFound(new { message = $"Person with ID {id} not found." });
+            }
+
+            return Ok(person);
+        }
     }
 }
