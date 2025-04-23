@@ -10,6 +10,7 @@ public class DBContext(DbContextOptions<DBContext> options) : DbContext(options)
     public DbSet<Person> Persons { get; set; }
     public DbSet<Service> Services { get; set; }
     public DbSet<PersonService> PersonServices { get; set; }
+    public DbSet<Link> Links { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -23,9 +24,6 @@ public class DBContext(DbContextOptions<DBContext> options) : DbContext(options)
         modelBuilder.Entity<Service>()
             .HasIndex(s => s.Title)
             .IsUnique();
-
-        modelBuilder.Entity<PersonService>()
-            .HasKey(ps => new { ps.PersonId, ps.ServiceId });
 
         modelBuilder.Entity<Person>().HasData(
             new Person
@@ -64,10 +62,10 @@ public class DBContext(DbContextOptions<DBContext> options) : DbContext(options)
         );
 
         modelBuilder.Entity<PersonService>().HasData(
-            new PersonService { PersonId = 1, ServiceId = 1 },
-            new PersonService { PersonId = 1, ServiceId = 2 },
-            new PersonService { PersonId = 2, ServiceId = 2 },
-            new PersonService { PersonId = 3, ServiceId = 3 }
+            new PersonService { Id = 1, PersonId = 1, ServiceId = 1 },
+            new PersonService { Id = 2, PersonId = 1, ServiceId = 2 },
+            new PersonService { Id = 3, PersonId = 2, ServiceId = 2 },
+            new PersonService { Id = 4, PersonId = 3, ServiceId = 3 }
         );
     }
 }

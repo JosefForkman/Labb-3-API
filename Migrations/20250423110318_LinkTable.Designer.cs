@@ -4,6 +4,7 @@ using Labb_3_API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Labb_3_API.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20250423110318_LinkTable")]
+    partial class LinkTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,8 +43,6 @@ namespace Labb_3_API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PersonServiceId");
 
                     b.ToTable("Links");
                 });
@@ -119,6 +120,9 @@ namespace Labb_3_API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("LinkId")
+                        .HasColumnType("int");
+
                     b.Property<int>("PersonId")
                         .HasColumnType("int");
 
@@ -126,6 +130,8 @@ namespace Labb_3_API.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LinkId");
 
                     b.HasIndex("PersonId");
 
@@ -210,19 +216,12 @@ namespace Labb_3_API.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Labb_3_API.Models.Link", b =>
-                {
-                    b.HasOne("Labb_3_API.Models.PersonService", "PersonServices")
-                        .WithMany("Links")
-                        .HasForeignKey("PersonServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PersonServices");
-                });
-
             modelBuilder.Entity("Labb_3_API.Models.PersonService", b =>
                 {
+                    b.HasOne("Labb_3_API.Models.Link", null)
+                        .WithMany("PersonServices")
+                        .HasForeignKey("LinkId");
+
                     b.HasOne("Labb_3_API.Models.Person", "Person")
                         .WithMany("PersonServices")
                         .HasForeignKey("PersonId")
@@ -240,14 +239,14 @@ namespace Labb_3_API.Migrations
                     b.Navigation("Service");
                 });
 
-            modelBuilder.Entity("Labb_3_API.Models.Person", b =>
+            modelBuilder.Entity("Labb_3_API.Models.Link", b =>
                 {
                     b.Navigation("PersonServices");
                 });
 
-            modelBuilder.Entity("Labb_3_API.Models.PersonService", b =>
+            modelBuilder.Entity("Labb_3_API.Models.Person", b =>
                 {
-                    b.Navigation("Links");
+                    b.Navigation("PersonServices");
                 });
 
             modelBuilder.Entity("Labb_3_API.Models.Service", b =>
