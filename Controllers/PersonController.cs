@@ -38,14 +38,27 @@ namespace Labb_3_API.Controllers
             return Ok(persons);
         }
 
-        [HttpGet("{id}/LInk", Name = "GetPersonById")]
+        [HttpGet("{id}/Link", Name = "GetPersonById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Person>> GetLink(int id)
+        public async Task<ActionResult<LinkRespondDTO>> GetLink(int id)
         {
-            var person = await context.Links.Where(p => p.PersonServices.PersonId == id).ToListAsync();
+            if (id == 0)
+            {
+                return BadRequest(new { message = "Need to provide a id grether when 0" });
+            }
+            var person = await context.Links
+                .Where(p => p.PersonServices.PersonId == id)
+                .Select(p => new LinkRespondDTO
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Url = p.Url
+                })
+                .ToListAsync();
 
-            if (person == null)
+            if (person == null || person.Count == 0)
             {
                 return NotFound(new { message = $"Person with ID {id} not found." });
             }
