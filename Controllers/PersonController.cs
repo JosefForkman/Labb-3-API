@@ -23,7 +23,7 @@ namespace Labb_3_API.Controllers
                 BirthDate = p.BirthDate,
                 Email = p.Email,
                 PhoneNumber = p.PhoneNumber,
-                Services = p.PersonIntrests.Select(ps => new Service
+                Intrests = p.PersonIntrests.Select(ps => new Intrest
                 {
                     Id = ps.Intrest.Id,
                     Title = ps.Intrest.Title,

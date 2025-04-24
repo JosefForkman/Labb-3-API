@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Labb_3_API.DTO;
 
-public record Service
+public record Intrest
 {
     public int Id { get; set; }
     [Required]
@@ -30,7 +30,7 @@ public record Person
     public string? PhoneNumber { get; set; } = string.Empty;
 
     // Navigation property
-    public ICollection<Service> Services { get; set; } = [];
+    public ICollection<Intrest> Intrests { get; set; } = [];
 }
 
 
