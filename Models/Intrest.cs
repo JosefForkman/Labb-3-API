@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Labb_3_API.Models;
 
-public class Service
+public class Intrest
 {
     public int Id { get; set; }
     [Required]
@@ -13,5 +13,5 @@ public class Service
 
 
     // Navigation property
-    public ICollection<PersonService> PersonServices { get; set; } = [];
+    public ICollection<PersonIntrest> PersonIntrests { get; set; } = [];
 }

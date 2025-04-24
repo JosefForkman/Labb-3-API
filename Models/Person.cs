@@ -23,7 +23,7 @@ public class Person
     public string? PhoneNumber { get; set; } = string.Empty;
 
     // Navigation property
-    public ICollection<PersonService> PersonServices { get; set; } = [];
+    public ICollection<PersonIntrest> PersonIntrests { get; set; } = [];
 }
 
 

@@ -9,8 +9,8 @@ public class Link
     public string? Title { get; set; }
     [Url]
     public string? Url { get; set; }
-    public int PersonServiceId { get; set; }
+    public int PersonIntrestId { get; set; }
 
     // Navigation property
-    public PersonService PersonServices { get; set; } = null!;
+    public PersonIntrest PersonIntrests { get; set; } = null!;
 }

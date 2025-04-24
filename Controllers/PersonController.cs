@@ -23,11 +23,11 @@ namespace Labb_3_API.Controllers
                 BirthDate = p.BirthDate,
                 Email = p.Email,
                 PhoneNumber = p.PhoneNumber,
-                Services = p.PersonServices.Select(ps => new Service
+                Services = p.PersonIntrests.Select(ps => new Service
                 {
-                    Id = ps.Service.Id,
-                    Title = ps.Service.Title,
-                    Description = ps.Service.Description
+                    Id = ps.Intrest.Id,
+                    Title = ps.Intrest.Title,
+                    Description = ps.Intrest.Description
                 }).ToList()
             }).ToListAsync();
             if (persons == null || persons.Count == 0)
@@ -49,7 +49,7 @@ namespace Labb_3_API.Controllers
                 return BadRequest(new { message = "Need to provide a id grether when 0" });
             }
             var person = await context.Links
-                .Where(p => p.PersonServices.PersonId == id)
+                .Where(p => p.PersonIntrests.PersonId == id)
                 .Select(p => new LinkRespondDTO
                 {
                     Id = p.Id,
