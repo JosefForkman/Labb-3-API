@@ -21,7 +21,7 @@ public record Person
     public string? PhoneNumber { get; set; } = string.Empty;
 
     // Navigation property
-    public ICollection<Intrest> Intrests { get; set; } = [];
+    public ICollection<IntrestRespond> Intrests { get; set; } = [];
 }
 
 
