@@ -2,15 +2,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Labb_3_API.DTO;
 
-public record Intrest
-{
-    public int Id { get; set; }
-    [Required]
-    public string Title { get; set; } = string.Empty;
-    [Required]
-    public string Description { get; set; } = string.Empty;
-}
-
 public record Person
 {
     public int Id { get; set; }
