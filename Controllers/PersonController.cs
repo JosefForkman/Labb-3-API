@@ -23,7 +23,7 @@ namespace Labb_3_API.Controllers
                 BirthDate = p.BirthDate,
                 Email = p.Email,
                 PhoneNumber = p.PhoneNumber,
-                Intrests = p.PersonIntrests.Select(ps => new Intrest
+                Intrests = p.PersonIntrests.Select(ps => new IntrestRespond
                 {
                     Id = ps.Intrest.Id,
                     Title = ps.Intrest.Title,
@@ -70,7 +70,7 @@ namespace Labb_3_API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ICollection<Intrest>>> GetPersonIntrest(int PersonId)
+        public async Task<ActionResult<ICollection<IntrestRespond>>> GetPersonIntrest(int PersonId)
         {
             if (PersonId == 0)
             {
@@ -78,7 +78,7 @@ namespace Labb_3_API.Controllers
             }
             var person = await context.PersonIntrests
                 .Where(p => p.PersonId == PersonId)
-                .Select(p => new Intrest
+                .Select(p => new IntrestRespond
                 {
                     Id = p.Intrest.Id,
                     Title = p.Intrest.Title,
