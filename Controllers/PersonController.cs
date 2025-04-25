@@ -38,18 +38,18 @@ namespace Labb_3_API.Controllers
             return Ok(persons);
         }
 
-        [HttpGet("{id}/Link", Name = "GetPersonById")]
+        [HttpGet("{PersonId}/Link", Name = "GetPersonById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<LinkRespondDTO>> GetLink(int id)
+        public async Task<ActionResult<LinkRespondDTO>> GetPersonLink(int PersonId)
         {
-            if (id == 0)
+            if (PersonId == 0)
             {
                 return BadRequest(new { message = "Need to provide a id grether when 0" });
             }
             var person = await context.Links
-                .Where(p => p.PersonIntrests.PersonId == id)
+                .Where(p => p.PersonIntrests.PersonId == PersonId)
                 .Select(p => new LinkRespondDTO
                 {
                     Id = p.Id,
@@ -60,7 +60,35 @@ namespace Labb_3_API.Controllers
 
             if (person == null || person.Count == 0)
             {
-                return NotFound(new { message = $"Person with ID {id} not found." });
+                return NotFound(new { message = $"Person with ID {PersonId} not found." });
+            }
+
+            return Ok(person);
+        }
+
+        [HttpGet("{PersonId}/Intrest", Name = "GetIntrestByPersonId")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ICollection<Intrest>>> GetPersonIntrest(int PersonId)
+        {
+            if (PersonId == 0)
+            {
+                return BadRequest(new { message = "Need to provide a id grether when 0" });
+            }
+            var person = await context.PersonIntrests
+                .Where(p => p.PersonId == PersonId)
+                .Select(p => new Intrest
+                {
+                    Id = p.Intrest.Id,
+                    Title = p.Intrest.Title,
+                    Description = p.Intrest.Description
+                })
+                .ToListAsync();
+
+            if (person == null || person.Count == 0)
+            {
+                return NotFound(new { message = $"Person with ID {PersonId} not found." });
             }
 
             return Ok(person);
