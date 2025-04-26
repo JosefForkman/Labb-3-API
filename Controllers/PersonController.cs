@@ -19,9 +19,11 @@ namespace Labb_3_API.Controllers
             var persons = await context.Persons
                 .Include(person => person.PersonIntrests)
                     .ThenInclude(personIntrest => personIntrest.Intrest)
+                .Include(person => person.PersonIntrests)
+                    .ThenInclude(personIntrest => personIntrest.Links)
                 .Select(person => person.MapToDTO())
                 .ToListAsync();
-            
+
             if (persons == null || persons.Count == 0)
             {
                 return NotFound(new { message = "No persons found." });
@@ -34,7 +36,7 @@ namespace Labb_3_API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<LinkRespondDTO>> GetPersonLink(int PersonId)
+        public async Task<ActionResult<LinkRespond>> GetPersonLink(int PersonId)
         {
             if (PersonId == 0)
             {
@@ -42,12 +44,7 @@ namespace Labb_3_API.Controllers
             }
             var person = await context.Links
                 .Where(link => link.PersonIntrests.PersonId == PersonId)
-                .Select(link => new LinkRespondDTO
-                {
-                    Id = link.Id,
-                    Title = link.Title,
-                    Url = link.Url
-                })
+                .Select(link => link.MapToDTO())
                 .ToListAsync();
 
             if (person == null || person.Count == 0)

@@ -16,6 +16,9 @@ public static class PersonMapper
             PhoneNumber = person.PhoneNumber,
             BirthDate = person.BirthDate,
             Intrests = [.. person.PersonIntrests.Select(personalIntrest => personalIntrest.Intrest.MapToDTO())],
+            Links = [.. person.PersonIntrests
+                .SelectMany(personalIntrest => personalIntrest.Links)
+                .Select(link => link.MapToDTO())]
         };
     }
 }

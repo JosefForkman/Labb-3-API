@@ -22,6 +22,7 @@ public record PersonRespond
 
     // Navigation property
     public ICollection<IntrestRespond> Intrests { get; set; } = [];
+    public ICollection<LinkRespond> Links { get; set; } = [];
 }
 
 

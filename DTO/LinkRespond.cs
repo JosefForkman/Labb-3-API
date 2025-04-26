@@ -1,6 +1,6 @@
 namespace Labb_3_API.DTO;
 
-public record LinkRespondDTO
+public record LinkRespond
 {
     public int Id { get; set; }
     public string? Title { get; set; }
