@@ -1,5 +1,6 @@
 using Labb_3_API.Data;
 using Labb_3_API.DTO;
+using Labb_3_API.Mapping;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,23 +14,10 @@ namespace Labb_3_API.Controllers
         [HttpGet(Name = "GetAllPersons")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ICollection<Person>>> Get()
+        public async Task<ActionResult<ICollection<PersonRespond>>> Get()
         {
-            var persons = await context.Persons.Select(p => new Person
-            {
-                Id = p.Id,
-                FirstName = p.FirstName,
-                LastName = p.LastName,
-                BirthDate = p.BirthDate,
-                Email = p.Email,
-                PhoneNumber = p.PhoneNumber,
-                Intrests = p.PersonIntrests.Select(ps => new IntrestRespond
-                {
-                    Id = ps.Intrest.Id,
-                    Title = ps.Intrest.Title,
-                    Description = ps.Intrest.Description
-                }).ToList()
-            }).ToListAsync();
+            var persons = await context.Persons.Select(person => person.MapToDTO()).ToListAsync();
+            
             if (persons == null || persons.Count == 0)
             {
                 return NotFound(new { message = "No persons found." });
@@ -49,12 +37,12 @@ namespace Labb_3_API.Controllers
                 return BadRequest(new { message = "Need to provide a id grether when 0" });
             }
             var person = await context.Links
-                .Where(p => p.PersonIntrests.PersonId == PersonId)
-                .Select(p => new LinkRespondDTO
+                .Where(link => link.PersonIntrests.PersonId == PersonId)
+                .Select(link => new LinkRespondDTO
                 {
-                    Id = p.Id,
-                    Title = p.Title,
-                    Url = p.Url
+                    Id = link.Id,
+                    Title = link.Title,
+                    Url = link.Url
                 })
                 .ToListAsync();
 
@@ -77,12 +65,12 @@ namespace Labb_3_API.Controllers
                 return BadRequest(new { message = "Need to provide a id grether when 0" });
             }
             var person = await context.PersonIntrests
-                .Where(p => p.PersonId == PersonId)
-                .Select(p => new IntrestRespond
+                .Where(personInterest => personInterest.PersonId == PersonId)
+                .Select(personIntrest => new IntrestRespond
                 {
-                    Id = p.Intrest.Id,
-                    Title = p.Intrest.Title,
-                    Description = p.Intrest.Description
+                    Id = personIntrest.Intrest.Id,
+                    Title = personIntrest.Intrest.Title,
+                    Description = personIntrest.Intrest.Description
                 })
                 .ToListAsync();
 

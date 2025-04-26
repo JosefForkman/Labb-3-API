@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Labb_3_API.DTO;
 
-public record Person
+public record PersonRespond
 {
     public int Id { get; set; }
     [Required]
