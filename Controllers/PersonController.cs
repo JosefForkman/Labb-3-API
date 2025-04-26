@@ -16,7 +16,11 @@ namespace Labb_3_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ICollection<PersonRespond>>> Get()
         {
-            var persons = await context.Persons.Select(person => person.MapToDTO()).ToListAsync();
+            var persons = await context.Persons
+                .Include(person => person.PersonIntrests)
+                    .ThenInclude(personIntrest => personIntrest.Intrest)
+                .Select(person => person.MapToDTO())
+                .ToListAsync();
             
             if (persons == null || persons.Count == 0)
             {
@@ -66,12 +70,7 @@ namespace Labb_3_API.Controllers
             }
             var person = await context.PersonIntrests
                 .Where(personInterest => personInterest.PersonId == PersonId)
-                .Select(personIntrest => new IntrestRespond
-                {
-                    Id = personIntrest.Intrest.Id,
-                    Title = personIntrest.Intrest.Title,
-                    Description = personIntrest.Intrest.Description
-                })
+                .Select(personIntrest => personIntrest.Intrest.MapToDTO())
                 .ToListAsync();
 
             if (person == null || person.Count == 0)

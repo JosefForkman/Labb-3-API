@@ -15,6 +15,7 @@ public static class PersonMapper
             Email = person.Email,
             PhoneNumber = person.PhoneNumber,
             BirthDate = person.BirthDate,
+            Intrests = [.. person.PersonIntrests.Select(personalIntrest => personalIntrest.Intrest.MapToDTO())],
         };
     }
 }

@@ -1,5 +1,6 @@
 using Labb_3_API.Data;
 using Labb_3_API.DTO;
+using Labb_3_API.Mapping;
 using Labb_3_API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,12 +17,7 @@ namespace Labb_3_API.Controllers
         public async Task<ActionResult<ICollection<IntrestRespond>>> Get()
         {
             var Intrests = await context.Intrests
-                .Select(intrest => new IntrestRespond 
-                    { 
-                        Id = intrest.Id,
-                        Title = intrest.Title, 
-                        Description = intrest.Description 
-                    })
+                .Select(intrest => intrest.MapToDTO())
                 .ToListAsync();
             if (Intrests == null || Intrests.Count == 0)
             {
@@ -34,9 +30,9 @@ namespace Labb_3_API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IntrestRespond>> AddIntrestToPerson([FromBody] IntrestRequest intrest, int PersonId)
+        public async Task<ActionResult<IntrestRespond>> AddIntrestToPerson([FromBody] IntrestRequest interestResponse, int PersonId)
         {
-            if (PersonId == 0 || intrest == null)
+            if (PersonId == 0 || interestResponse == null)
             {
                 return BadRequest(new { message = "Need to provide a id grether when 0" });
             }
@@ -46,17 +42,17 @@ namespace Labb_3_API.Controllers
             {
                 return NotFound(new { message = "Person not found." });
             }
-            var intrestAllreadyExists = await context.Intrests.FirstOrDefaultAsync(i => i.Title == intrest.Title);
+            var intrestAllreadyExists = await context.Intrests.FirstOrDefaultAsync(interest => interest.Title == interestResponse.Title);
             if (intrestAllreadyExists == null)
             {
                 var newIntrest = new Intrest
                 {
-                    Title = intrest.Title,
-                    Description = intrest.Description
+                    Title = interestResponse.Title,
+                    Description = interestResponse.Description
                 };
                 context.Intrests.Add(newIntrest);
                 await context.SaveChangesAsync();
-                
+
                 intrestAllreadyExists = newIntrest;
             }
 
@@ -69,7 +65,7 @@ namespace Labb_3_API.Controllers
 
             context.PersonIntrests.Add(personIntrest);
             await context.SaveChangesAsync();
-            
+
             var intrestRespond = new IntrestRespond
             {
                 Id = intrestAllreadyExists.Id,
