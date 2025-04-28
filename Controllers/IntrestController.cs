@@ -26,22 +26,23 @@ namespace Labb_3_API.Controllers
 
             return Ok(Intrests);
         }
-        [HttpPost("{PersonId}", Name = "AddIntrestToPerson")]
+        [HttpPost(Name = "AddIntrestToPerson")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IntrestRespond>> AddIntrestToPerson([FromBody] IntrestRequest interestResponse, int PersonId)
+        public async Task<ActionResult<IntrestRespond>> AddIntrestToPerson([FromBody] IntrestRequest interestResponse)
         {
-            if (PersonId == 0 || interestResponse == null)
+            if (interestResponse == null)
             {
                 return BadRequest(new { message = "Need to provide a id grether when 0" });
             }
 
-            var person = await context.Persons.FindAsync(PersonId);
+            var person = await context.Persons.FindAsync(interestResponse.PersonId);
             if (person == null)
             {
                 return NotFound(new { message = "Person not found." });
             }
+
             var intrestAllreadyExists = await context.Intrests.FirstOrDefaultAsync(interest => interest.Title == interestResponse.Title);
             if (intrestAllreadyExists == null)
             {
