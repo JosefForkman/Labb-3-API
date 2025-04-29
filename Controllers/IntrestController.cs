@@ -11,7 +11,7 @@ namespace Labb_3_API.Controllers
     [ApiController]
     public class IntrestController(DBContext context) : ControllerBase
     {
-        [HttpGet(Name = "GetAllServices")]
+        [HttpGet(Name = "GetAllIntrests")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ICollection<IntrestRespond>>> Get()
@@ -21,7 +21,7 @@ namespace Labb_3_API.Controllers
                 .ToListAsync();
             if (Intrests == null || Intrests.Count == 0)
             {
-                return NotFound(new { message = "No services found." });
+                return NotFound(new { message = "No intrest not found." });
             }
 
             return Ok(Intrests);

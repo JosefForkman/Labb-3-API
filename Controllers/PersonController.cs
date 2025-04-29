@@ -13,7 +13,6 @@ namespace Labb_3_API.Controllers
 
         [HttpGet(Name = "GetAllPersons")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ICollection<PersonRespond>>> Get()
         {
             var persons = await context.Persons
@@ -23,11 +22,6 @@ namespace Labb_3_API.Controllers
                     .ThenInclude(personIntrest => personIntrest.Links)
                 .Select(person => person.MapToDTO())
                 .ToListAsync();
-
-            if (persons == null || persons.Count == 0)
-            {
-                return NotFound(new { message = "No persons found." });
-            }
 
             return Ok(persons);
         }
