@@ -30,7 +30,7 @@ public class LinkController(DBContext context) : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<LinkRespond>> AddLinkToPerson([FromBody] CreateLinkIntrest link)
+    public async Task<ActionResult<LinkRespond>> AddLinkToPerson([FromBody] LinkRequest link)
     {
         if (link == null || link.PersonId == 0 || link.IntrestId == 0 || link.Url == null)
         {
